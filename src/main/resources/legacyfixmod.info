@@ -2,7 +2,7 @@
 {
   "modid": "legacyfix",
   "name": "LegacyFix",
-  "description": "Fixes NEI to work on the new launcher, and MiscPeripherals to work with ASM 4.1+",
+  "description": "Fixes some old mods to work on the new launcher",
   "version": "${version}",
   "mcversion": "${mc_version}",
   "authors": [ "Su5eD" ],
