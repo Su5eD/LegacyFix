@@ -1,0 +1,11 @@
+[
+{
+  "modid": "legacyfix",
+  "name": "LegacyFix",
+  "description": "Fixes NEI to work on the new launcher, and MiscPeripherals to work with ASM 4.1+",
+  "version": "${version}",
+  "mcversion": "${mc_version}",
+  "authors": [ "Su5eD" ],
+  "dependencies": []
+}
+]
