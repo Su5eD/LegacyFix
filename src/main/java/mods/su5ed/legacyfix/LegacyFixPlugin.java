@@ -3,7 +3,6 @@ package mods.su5ed.legacyfix;
 import java.util.Map;
 
 import cpw.mods.fml.relauncher.IFMLLoadingPlugin;
-import net.minecraft.block.Block;
 import net.minecraft.launchwrapper.LaunchClassLoader;
 
 public class LegacyFixPlugin implements IFMLLoadingPlugin {

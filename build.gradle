@@ -23,7 +23,7 @@ apply plugin: 'maven-publish'
 
 MinecraftRepo.MCP_URL = 'https://su5ed.jfrog.io/artifactory/maven/'
 
-version = '1.0'
+version = '1.1'
 group = 'mods.su5ed'
 
 def forgeGroup = "net.minecraftforge"

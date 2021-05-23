@@ -1,5 +1,14 @@
 package mods.su5ed.legacyfix;
 
+import cpw.mods.fml.common.Loader;
+import cpw.mods.fml.common.ModClassLoader;
+import cpw.mods.fml.common.asm.transformers.TransformerCompatLayer;
+import net.minecraft.launchwrapper.IClassTransformer;
+import org.objectweb.asm.ClassReader;
+import org.objectweb.asm.ClassWriter;
+import org.objectweb.asm.Opcodes;
+import org.objectweb.asm.tree.*;
+
 import java.io.File;
 import java.io.IOException;
 import java.util.HashMap;
@@ -9,16 +18,6 @@ import java.util.function.Consumer;
 import java.util.zip.ZipEntry;
 import java.util.zip.ZipFile;
 
-import cpw.mods.fml.common.Loader;
-import cpw.mods.fml.common.ModClassLoader;
-import cpw.mods.fml.common.ModContainer;
-import org.objectweb.asm.ClassReader;
-import org.objectweb.asm.ClassWriter;
-import org.objectweb.asm.Opcodes;
-import org.objectweb.asm.tree.*;
-
-import net.minecraft.launchwrapper.IClassTransformer;
-
 public class LegacyFixTransformer implements IClassTransformer {
 	private static final Map<String, Consumer<ClassNode>> transformers = new HashMap<>();
 	
@@ -26,6 +25,7 @@ public class LegacyFixTransformer implements IClassTransformer {
 		transformers.put("miscperipherals.asm.BlockTurtleTransformer", LegacyFixTransformer::patchAsmApiNumber);
 		transformers.put("miscperipherals.asm.TileEntityTurtleTransformer", LegacyFixTransformer::patchAsmApiNumber);
 		transformers.put("codechicken.nei.TMIUninstaller", LegacyFixTransformer::patchTMIUninstaller);
+		transformers.put("immibis.core.ImmibisCore", LegacyFixTransformer::patchImmibisCore);
 	}
 
 	@Override
@@ -71,20 +71,45 @@ public class LegacyFixTransformer implements IClassTransformer {
 				InsnList list = new InsnList();
 				list.add(new MethodInsnNode(Opcodes.INVOKESTATIC, "mods/su5ed/legacyfix/LegacyFixTransformer", "getJarFile", "()Ljava/io/File;", false));
 				list.add(new InsnNode(Opcodes.ARETURN));
-				m.instructions.insertBefore(m.instructions.get(0), list);
+				m.instructions.insertBefore(m.instructions.getFirst(), list);
 			}
 		}
 	}
 	
 	public static File getJarFile() {
 		for(File file : ((ModClassLoader) Loader.instance().getModClassLoader()).getParentSources()) {
-			try {
-				ZipFile archive = new ZipFile(file);
+			try(ZipFile archive = new ZipFile(file)) {
 				ZipEntry serverClass = archive.getEntry("net/minecraft/server/MinecraftServer.class");
 				if (serverClass != null) return file;
 			}
 			catch (IOException ignored) {}
 		}
 		return null;
+	}
+	
+	private static void patchImmibisCore(ClassNode classNode) {
+		for (MethodNode m : classNode.methods) {
+			if (m.name.equals("<clinit>") && m.desc.equals("()V")) {
+				for (Iterator<AbstractInsnNode> it = m.instructions.iterator(); it.hasNext(); ) {
+					AbstractInsnNode insn = it.next();
+					
+					if (insn instanceof MethodInsnNode) {
+						MethodInsnNode methodInsn = (MethodInsnNode) insn;
+						if (methodInsn.owner.equals("net/minecraft/launchwrapper/LaunchClassLoader") && methodInsn.name.equals("registerTransformer") && methodInsn.desc.equals("(Ljava/lang/String;)V")) {
+							methodInsn.setOpcode(Opcodes.INVOKESTATIC);
+							methodInsn.owner = "mods/su5ed/legacyfix/LegacyFixTransformer";
+						}
+					}
+				}
+			}
+		}
+	}
+	
+	public static void registerTransformer(String name) {
+		try {
+			TransformerCompatLayer.registerTransformer((cpw.mods.fml.relauncher.IClassTransformer) Class.forName(name).newInstance());
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
 	}
 }
