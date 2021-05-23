@@ -1,5 +1,5 @@
 # LegacyFix
-Fixes old mods to work on the new launcher.
+Fixes some old mods to work on the new launcher.
 This is a coremod, and thus must be put into the **coremods** folder to load.
 
 ### NEI
