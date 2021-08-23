@@ -1,15 +1,15 @@
 package mods.su5ed.legacyfix;
 
-import java.util.Map;
-
 import cpw.mods.fml.relauncher.IFMLLoadingPlugin;
-import net.minecraft.launchwrapper.LaunchClassLoader;
+import cpw.mods.fml.relauncher.RelaunchClassLoader;
+
+import java.util.Map;
 
 public class LegacyFixPlugin implements IFMLLoadingPlugin {
 	
 	public LegacyFixPlugin() {
 		// Dirty hack to make sure our transformer gets registered sooner than miscperipherals
-		LaunchClassLoader classLoader = ((LaunchClassLoader) getClass().getClassLoader());
+		RelaunchClassLoader classLoader = ((RelaunchClassLoader) getClass().getClassLoader());
 		classLoader.registerTransformer("mods.su5ed.legacyfix.LegacyFixTransformer");
 	}
 

@@ -2,8 +2,7 @@ package mods.su5ed.legacyfix;
 
 import cpw.mods.fml.common.Loader;
 import cpw.mods.fml.common.ModClassLoader;
-import cpw.mods.fml.common.asm.transformers.TransformerCompatLayer;
-import net.minecraft.launchwrapper.IClassTransformer;
+import cpw.mods.fml.relauncher.IClassTransformer;
 import org.objectweb.asm.ClassReader;
 import org.objectweb.asm.ClassWriter;
 import org.objectweb.asm.Opcodes;
@@ -18,24 +17,24 @@ import java.util.function.Consumer;
 import java.util.zip.ZipEntry;
 import java.util.zip.ZipFile;
 
+@SuppressWarnings("unused")
 public class LegacyFixTransformer implements IClassTransformer {
-	private static final Map<String, Consumer<ClassNode>> transformers = new HashMap<>();
+	private static final Map<String, Consumer<ClassNode>> TRANSFORMERS = new HashMap<>();
 	
 	static {
-		transformers.put("miscperipherals.asm.BlockTurtleTransformer", LegacyFixTransformer::patchAsmApiNumber);
-		transformers.put("miscperipherals.asm.TileEntityTurtleTransformer", LegacyFixTransformer::patchAsmApiNumber);
-		transformers.put("codechicken.nei.TMIUninstaller", LegacyFixTransformer::patchTMIUninstaller);
-		transformers.put("immibis.core.ImmibisCore", LegacyFixTransformer::patchImmibisCore);
+		TRANSFORMERS.put("miscperipherals.asm.BlockTurtleTransformer", LegacyFixTransformer::patchAsmApiNumber);
+		TRANSFORMERS.put("miscperipherals.asm.TileEntityTurtleTransformer", LegacyFixTransformer::patchAsmApiNumber);
+		TRANSFORMERS.put("codechicken.nei.TMIUninstaller", LegacyFixTransformer::patchTMIUninstaller);
 	}
 
 	@Override
-	public byte[] transform(String name, String transformedName, byte[] bytes) {
-		if (transformers.containsKey(name)) {
+	public byte[] transform(String name, byte[] bytes) {
+		if (TRANSFORMERS.containsKey(name)) {
 			ClassNode classNode = new ClassNode();
 			ClassReader classReader = new ClassReader(bytes);
 			classReader.accept(classNode, 0);
 			        
-			transformers.get(name).accept(classNode);
+			TRANSFORMERS.get(name).accept(classNode);
 					
 			ClassWriter writer = new ClassWriter(ClassWriter.COMPUTE_MAXS);
 			classNode.accept(writer);
@@ -85,31 +84,5 @@ public class LegacyFixTransformer implements IClassTransformer {
 			catch (IOException ignored) {}
 		}
 		return null;
-	}
-	
-	private static void patchImmibisCore(ClassNode classNode) {
-		for (MethodNode m : classNode.methods) {
-			if (m.name.equals("<clinit>") && m.desc.equals("()V")) {
-				for (Iterator<AbstractInsnNode> it = m.instructions.iterator(); it.hasNext(); ) {
-					AbstractInsnNode insn = it.next();
-					
-					if (insn instanceof MethodInsnNode) {
-						MethodInsnNode methodInsn = (MethodInsnNode) insn;
-						if (methodInsn.owner.equals("net/minecraft/launchwrapper/LaunchClassLoader") && methodInsn.name.equals("registerTransformer") && methodInsn.desc.equals("(Ljava/lang/String;)V")) {
-							methodInsn.setOpcode(Opcodes.INVOKESTATIC);
-							methodInsn.owner = "mods/su5ed/legacyfix/LegacyFixTransformer";
-						}
-					}
-				}
-			}
-		}
-	}
-	
-	public static void registerTransformer(String name) {
-		try {
-			TransformerCompatLayer.registerTransformer((cpw.mods.fml.relauncher.IClassTransformer) Class.forName(name).newInstance());
-		} catch (Exception e) {
-			e.printStackTrace();
-		}
 	}
 }

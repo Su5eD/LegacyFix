@@ -1,1 +1,24 @@
+pluginManagement {
+    resolutionStrategy {
+        eachPlugin {
+            if (requested.id.id == 'net.minecraftforge.gradle') {
+                useModule("${requested.id}:ForgeGradle:${requested.version}")
+            }
+        }
+    }
+
+    repositories {
+        mavenLocal()
+        gradlePluginPortal()
+        mavenCentral()
+        maven {
+            url = 'https://su5ed.jfrog.io/artifactory/maven/'
+        }
+        maven {
+            name 'MinecraftForge'
+            url 'https://maven.minecraftforge.net/'
+        }
+    }
+}
+
 rootProject.name = 'LegacyFix'

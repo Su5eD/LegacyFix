@@ -6,6 +6,7 @@
   "version": "${version}",
   "mcversion": "${mc_version}",
   "authors": [ "Su5eD" ],
-  "dependencies": []
+  "requiredmods": [ "Forge" ],
+  "dependencies": [ "Forge@[6.6.4.1,)" ]
 }
 ]

@@ -2,33 +2,20 @@ import net.minecraftforge.gradle.userdev.UserDevPlugin
 import net.minecraftforge.gradle.common.util.MinecraftRepo
 import net.minecraftforge.gradle.common.util.Utils
 
-buildscript {
-    repositories {
-        maven {
-            url = 'https://su5ed.jfrog.io/artifactory/maven/'
-        }
-        maven {
-            url = 'https://files.minecraftforge.net/maven'
-        }
-        mavenCentral()
-    }
-    dependencies {
-        classpath group: 'net.minecraftforge.gradle', name: 'ForgeGradle', version: '4.1.legacy-SNAPSHOT', changing: true
-    }
+plugins {
+    id 'eclipse'
+    id 'maven-publish'
+    id 'net.minecraftforge.gradle' version '5.1.legacy.+'
 }
-apply plugin: 'net.minecraftforge.gradle'
-// Only edit below this line, the above code adds and enables the necessary things for Forge to be setup.
-apply plugin: 'eclipse'
-apply plugin: 'maven-publish'
 
 MinecraftRepo.MCP_URL = 'https://su5ed.jfrog.io/artifactory/maven/'
 
-version = '1.1'
+version = '1.2'
 group = 'mods.su5ed'
 
 def forgeGroup = "net.minecraftforge"
 def forgeName = "forge"
-def forgeVersion = "1.4.7-6.6.3.541"
+def forgeVersion = "1.4.7-6.6.4.1"
 
 java.toolchain.languageVersion = JavaLanguageVersion.of(8) // Mojang ships Java 8 to end users, so your mod should target Java 8.
 
