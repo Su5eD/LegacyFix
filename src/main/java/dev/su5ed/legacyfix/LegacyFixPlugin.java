@@ -1,4 +1,4 @@
-package mods.su5ed.legacyfix;
+package dev.su5ed.legacyfix;
 
 import cpw.mods.fml.relauncher.IFMLLoadingPlugin;
 import cpw.mods.fml.relauncher.RelaunchClassLoader;
@@ -10,7 +10,7 @@ public class LegacyFixPlugin implements IFMLLoadingPlugin {
 	public LegacyFixPlugin() {
 		// Dirty hack to make sure our transformer gets registered sooner than miscperipherals
 		RelaunchClassLoader classLoader = ((RelaunchClassLoader) getClass().getClassLoader());
-		classLoader.registerTransformer("mods.su5ed.legacyfix.LegacyFixTransformer");
+		classLoader.registerTransformer("dev.su5ed.legacyfix.LegacyFixTransformer");
 	}
 
 	@Override
@@ -25,7 +25,7 @@ public class LegacyFixPlugin implements IFMLLoadingPlugin {
 
 	@Override
 	public String getModContainerClass() {
-		return "mods.su5ed.legacyfix.LegacyFixModContainer";
+		return "dev.su5ed.legacyfix.LegacyFixModContainer";
 	}
 
 	@Override

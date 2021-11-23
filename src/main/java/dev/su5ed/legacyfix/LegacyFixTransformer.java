@@ -1,4 +1,4 @@
-package mods.su5ed.legacyfix;
+package dev.su5ed.legacyfix;
 
 import cpw.mods.fml.common.Loader;
 import cpw.mods.fml.common.ModClassLoader;

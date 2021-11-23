@@ -11,11 +11,11 @@ plugins {
 MinecraftRepo.MCP_URL = 'https://su5ed.jfrog.io/artifactory/maven/'
 
 version = '1.2'
-group = 'mods.su5ed'
+group = 'dev.su5ed'
 
 def forgeGroup = "net.minecraftforge"
 def forgeName = "forge"
-def forgeVersion = "1.4.7-6.6.4.551"
+def forgeVersion = "1.4.7-6.6.4.552"
 
 java.toolchain.languageVersion = JavaLanguageVersion.of(8) // Mojang ships Java 8 to end users, so your mod should target Java 8.
 
@@ -31,7 +31,7 @@ minecraft {
 
             property 'forge.logging.console.level', 'debug'
             
-            property 'fml.coreMods.load', "mods.su5ed.legacyfix.LegacyFixPlugin"
+            property 'fml.coreMods.load', "dev.su5ed.legacyfix.LegacyFixPlugin"
 
             mods {
                 legacyfix {
@@ -47,7 +47,7 @@ minecraft {
 
             property 'forge.logging.console.level', 'debug'
             
-            property 'fml.coreMods.load', "mods.su5ed.legacyfix.LegacyFixPlugin"
+            property 'fml.coreMods.load', "dev.su5ed.legacyfix.LegacyFixPlugin"
 
             mods {
                 legacyfix {
@@ -64,6 +64,7 @@ repositories {
         url = 'https://su5ed.jfrog.io/artifactory/maven/'
     }
     mavenCentral()
+    mavenLocal()
 }
 
 dependencies {
@@ -81,7 +82,7 @@ jar {
             "Implementation-Version": "${version}",
             "Implementation-Vendor" :"su5ed",
             "Implementation-Timestamp": new Date().format("yyyy-MM-dd'T'HH:mm:ssZ"),
-            "FMLCorePlugin": "mods.su5ed.legacyfix.LegacyFixPlugin"
+            "FMLCorePlugin": "dev.su5ed.legacyfix.LegacyFixPlugin"
         ])
     }
 }

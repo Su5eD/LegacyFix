@@ -1,4 +1,4 @@
-package mods.su5ed.legacyfix;
+package dev.su5ed.legacyfix;
 
 import com.google.common.eventbus.EventBus;
 import cpw.mods.fml.common.DummyModContainer;
