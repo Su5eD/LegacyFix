@@ -5,8 +5,6 @@
   "description": "Fixes some old mods to work on the new launcher",
   "version": "${version}",
   "mcversion": "${mc_version}",
-  "authors": [ "Su5eD" ],
-  "requiredmods": [ "Forge" ],
-  "dependencies": [ "Forge@[6.6.4.545,)" ]
+  "authors": [ "Su5eD" ]
 }
 ]

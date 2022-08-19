@@ -6,12 +6,6 @@ import cpw.mods.fml.relauncher.RelaunchClassLoader;
 import java.util.Map;
 
 public class LegacyFixPlugin implements IFMLLoadingPlugin {
-	
-	public LegacyFixPlugin() {
-		// Dirty hack to make sure our transformer gets registered sooner than miscperipherals
-		RelaunchClassLoader classLoader = ((RelaunchClassLoader) getClass().getClassLoader());
-		classLoader.registerTransformer("dev.su5ed.legacyfix.LegacyFixTransformer");
-	}
 
 	@Override
 	public String[] getLibraryRequestClass() {
@@ -20,7 +14,7 @@ public class LegacyFixPlugin implements IFMLLoadingPlugin {
 
 	@Override
 	public String[] getASMTransformerClass() {
-		return null;
+		return new String[] { "dev.su5ed.legacyfix.LegacyFixTransformer" };
 	}
 
 	@Override
