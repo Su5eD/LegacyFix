@@ -1,7 +1,6 @@
 package dev.su5ed.legacyfix;
 
 import cpw.mods.fml.relauncher.IFMLLoadingPlugin;
-import cpw.mods.fml.relauncher.RelaunchClassLoader;
 
 import java.util.Map;
 
@@ -14,7 +13,7 @@ public class LegacyFixPlugin implements IFMLLoadingPlugin {
 
 	@Override
 	public String[] getASMTransformerClass() {
-		return new String[] { "dev.su5ed.legacyfix.LegacyFixTransformer" };
+		return new String[] { "dev.su5ed.legacyfix.NEITransformer", "dev.su5ed.legacyfix.PlayerSkinTransformer" };
 	}
 
 	@Override
