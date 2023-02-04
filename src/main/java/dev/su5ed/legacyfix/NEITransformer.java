@@ -42,7 +42,7 @@ public class NEITransformer implements IClassTransformer {
         for (MethodNode m : (List<MethodNode>) classNode.methods) {
             if (m.name.equals("getJarFile") && m.desc.equals("()Ljava/io/File;")) {
                 InsnList list = new InsnList();
-                list.add(new MethodInsnNode(Opcodes.INVOKESTATIC, "mods/su5ed/legacyfix/LegacyFixTransformer", "getJarFile", "()Ljava/io/File;"));
+                list.add(new MethodInsnNode(Opcodes.INVOKESTATIC, "dev/su5ed/legacyfix/NEITransformer", "getJarFile", "()Ljava/io/File;"));
                 list.add(new InsnNode(Opcodes.ARETURN));
                 m.instructions.insert(list);
             }
